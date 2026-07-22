@@ -14,7 +14,7 @@ def main():
     image_path = "../data/sample_game_2.jpg"
     output_path = "../data/sample_game_data.json"
 
-    regions = analyze_scoreboard(image_path)
+    regions = analyze_scoreboard(image)
     ocr_data = extract_text(regions)
     game_data = build_game_data(ocr_data)
     save_game_data(game_data, output_path)
@@ -29,7 +29,13 @@ def save_game_data(game_data, output_path):
 
 image_path = "../data/sample_game_2.jpg"
 
-regions = analyze_scoreboard(image_path)
+image = cv2.imread(image_path)
+
+if image is None:
+    raise FileNotFoundError(f"Could not load image: {image_path}")
+
+
+regions = analyze_scoreboard(image)
 ocr_data = extract_text(regions)
 game_data = build_game_data(ocr_data)
 

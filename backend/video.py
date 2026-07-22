@@ -7,14 +7,8 @@ def open_video(video_path):
         raise FileNotFoundError(f"Could not open video: {video_path}")
     
     print("Video opened successfully")
-
     return video
 
-video_path = "../data/sample_game.mp4"
-
-video = open_video(video_path)
-
-video.release()
 
 def get_first_frame(video):
     success, frame = video.read()
@@ -26,15 +20,12 @@ def get_first_frame(video):
 
     return frame
 
-video_path = "../data/sample_game.mp4"
+if __name__ == "__main__":
+    video_path = "../data/sample_game.mp4"
 
-video = open_video(video_path)
+    video = open_video(video_path)
 
-frame = get_first_frame(video)
+    frame = get_first_frame(video)
 
-cv2.imwrite("../data/first_frame.jpg", frame)
-cv2.imshow("First Frame", frame)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    video.release()
 
-video.release()

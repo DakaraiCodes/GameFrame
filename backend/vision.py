@@ -1,33 +1,53 @@
 import cv2
 
-x = 465
-y = 953
-width = 994
-height = 66
 
-def analyze_scoreboard(image_path):
-    image = cv2.imread(image_path)
+def analyze_scoreboard(image):
+    image_height, image_width = image.shape[:2]
 
-    if image is None:
-        raise FileNotFoundError(f"Could not load image: {image_path}")
+    scoreboard = image[
+        int(image_height * 0.94):int(image_height * 1.00),
+        int(image_width * 0.247):int(image_width * 0.752)
+    ]
 
-    print("Image loaded successfully")
+    scoreboard_height, scoreboard_width = scoreboard.shape[:2]
+    left_score = scoreboard[
+        int(scoreboard_height * 0.05):int(scoreboard_height * 0.90),
+        int(scoreboard_width * 0.31):int(scoreboard_width * 0.40)
+    ]
 
-    scoreboard = image[y:y + height, x:x + width]
+    right_score = scoreboard[
+        int(scoreboard_height * 0.05):int(scoreboard_height * 0.90),
+        int(scoreboard_width * 0.58):int(scoreboard_width * 0.67)
+    ]
 
-    left_score = scoreboard[:, 300:400]
-    right_score = scoreboard[:, 560:660]
-    game_clock = scoreboard[:, 735:915]
-    quarter = scoreboard[0:50, 660:735]
-    quarter_number = quarter[:, 0:35]
-    shot_clock = scoreboard[:, 915:994]
+    quarter = scoreboard[
+        int(scoreboard_height * 0.05):int(scoreboard_height * 0.90),
+        int(scoreboard_width * 0.67):int(scoreboard_width * 0.76)
+    ]
 
+    game_clock = scoreboard[
+        int(scoreboard_height * 0.05):int(scoreboard_height * 0.90),
+        int(scoreboard_width * 0.76):int(scoreboard_width * 0.94)
+    ]
+
+    shot_clock = scoreboard[
+        int(scoreboard_height * 0.05):int(scoreboard_height * 0.90),
+        int(scoreboard_width * 0.94):int(scoreboard_width * 1.00)
+    ]
+    
+    print("Image received succesfully")
+
+
+    left_score = scoreboard[
+        int(scoreboard_height * 0.07):int(scoreboard_height * 0.88),
+        int(scoreboard_width * 0.31):int(scoreboard_width * 0.40)
+    ]
+    
     return {
         "scoreboard": scoreboard,
         "left_score":left_score,
         "right_score":right_score,
         "game_clock":game_clock,
         "quarter":quarter,
-        "quarter_number":quarter_number,
         "shot_clock":shot_clock,
     }
