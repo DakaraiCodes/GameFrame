@@ -4,6 +4,7 @@ from vision import analyze_scoreboard
 from ocr import extract_text
 from models import build_game_data
 from io_utils import save_game_data
+from events import detect_scoring_events
 
 video_path = "../data/sample_game.mp4"
 
@@ -47,6 +48,18 @@ print("\nTimeline length:", len(timeline))
 save_game_data (
     timeline,
     "../data/video_timeline.json"
+)
+
+scoring_events = detect_scoring_events(timeline)
+
+print("\nScoring events:")
+
+for event in scoring_events:
+    print(event)
+
+save_game_data(
+    scoring_events,
+    "../data/scoring_events.json"
 )
 
 video.release()
