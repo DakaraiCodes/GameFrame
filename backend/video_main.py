@@ -6,6 +6,16 @@ from models import build_game_data
 from io_utils import save_game_data
 from events import detect_scoring_events, detect_lead_changes
 from runs import detect_scoring_runs
+from teams import get_team_name
+from summary import build_game_summary 
+from report import print_game_summary 
+from stats import get_largest_lead, get_largest_run
+
+
+team_names = {
+    "left": "Knicks",
+    "right": "Nets",
+}
 
 video_path = "../data/sample_game.mp4"
 
@@ -53,15 +63,24 @@ save_game_data (
 
 scoring_events = detect_scoring_events(timeline)
 
-print("\nScoring events:")
+largest_lead = get_largest_lead(timeline)
+
+print("\nLargest lead:")
+print(largest_lead)
+
 
 for event in scoring_events:
-    print(event)
+    team_name = get_team_name(
+        event["team"],
+        team_names
+    )
 
-save_game_data(
-    scoring_events,
-    "../data/scoring_events.json"
-)
+    display_event = {
+        **event,
+        "team": team_name,
+    }
+
+    print(display_event)
 
 lead_changes = detect_lead_changes(scoring_events)
 
@@ -74,14 +93,40 @@ scoring_events = detect_scoring_events(timeline)
 
 print("\nScorng events:")
 
-for event in scoring_events:
-    print(event)
+team_name = get_team_name(
+    event["team"],
+    team_names
+)
+
+print({
+    **event,
+    "team": team_name,
+})
 
 scoring_runs = detect_scoring_runs(scoring_events)
+
+largest_run = get_largest_run(scoring_runs)
+
+print("\nLargest run:")
+print(largest_run)
 
 print("\nScoring runs:")
 
 for run in scoring_runs:
     print(run)
+
+game_summary = build_game_summary(
+    timeline,
+    scoring_events,
+    lead_changes,
+    scoring_runs,
+    largest_lead,
+    largest_run,
+)
+
+print_game_summary(
+    game_summary,
+    team_names
+)
 
 video.release()

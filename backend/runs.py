@@ -17,8 +17,10 @@ def detect_scoring_runs(scoring_events):
                 runs.append({
                     "team": current_team,
                     "points": current_points,
+                    "run": f"{current_points}-0",
                     "start_clock": start_event["game_clock"],
                     "end_clock": event["game_clock"],
+                    "ended_by": event["team"],
                 })
 
             current_team = team
@@ -30,8 +32,10 @@ def detect_scoring_runs(scoring_events):
         runs.append({
             "team": current_team,
             "points": current_points,
+            "run": f"{current_points}-0",
             "start_clock": start_event["game_clock"],
             "end_clock": scoring_events[-1]["game_clock"],
+            "ended_by": None,
         })
 
     return runs
