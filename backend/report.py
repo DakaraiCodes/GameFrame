@@ -21,7 +21,7 @@ def print_game_summary(summary, team_names):
         print("\nLargest Lead")
 
         print(
-            f"{team_names[largest['team']]}"
+            f"{team_names[largest['team']]} "
             f"+{largest['lead']}"
         )
 
@@ -31,7 +31,7 @@ def print_game_summary(summary, team_names):
         print("\nLargest Run")
 
         print(
-            f"{team_names[largest_run ['team']]}"
+            f"{team_names[largest_run['team']]} "
             f"{largest_run['run']}"
         )
 

@@ -87,3 +87,18 @@ def detect_lead_changes(scoring_events):
 
     return lead_changes
 
+def build_score_progression(scoring_events):
+    progression = [
+        {
+            "score": "0-0",
+            "game_clock": "12:00",
+        }
+    ]
+
+    for event in scoring_events:
+        progression.append({
+            "score": event["score"],
+            "game_clock": event["game_clock"]
+        })
+
+    return progression 
