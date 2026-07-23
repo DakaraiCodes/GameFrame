@@ -45,7 +45,6 @@ def extract_text(regions):
         config="--psm 10 -c tessedit_char_whitelist=0123456789O"
     ).strip()
     
-    print("Raw left score OCR:", repr(left_score_text))
     left_score_text = left_score_text.replace("O", "0")
 
     # Right score preprocessing
@@ -85,7 +84,6 @@ def extract_text(regions):
         config="--psm 10 -c tessedit_char_whitelist=0123456789O"
     ).strip()
 
-    print("Raw right score OCR:", repr(right_score_text))
 
     right_score_text = right_score_text.replace("O", "0")
 

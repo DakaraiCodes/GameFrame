@@ -1,59 +1,52 @@
 import cv2
-from video import open_video, get_first_frame
+from video import open_video, get_frames_every_second
 from vision import analyze_scoreboard
 from ocr import extract_text
 from models import build_game_data
+from io_utils import save_game_data
 
 video_path = "../data/sample_game.mp4"
 
 video = open_video(video_path)
 
-frame = get_first_frame(video)
-#scoreboard_box = cv2.selectROI(
-#    "Select Video Scoreboard",
-#    frame,
-#    showCrosshair=True,
-#    fromCenter = False
-#)
+frames = get_frames_every_second(video)
 
-#print("Video scoreboard box:", scoreboard_box)
+first_sampled_frame = frames[0]
 
-#cv2.destroyAllWindows()
-#ideo.release()
+last_valid_game_data = {
+    "left_score": None,
+    "right_score": None,
+    "quarter": None,
+}
 
+timeline = []
 
-#print("Video frame shape:", frame.shape)
+for index, frame in enumerate(frames):
+    print(f"\nFrame {index + 1}")
+    regions = analyze_scoreboard(frame)
+    ocr_data = extract_text(regions)
+    game_data = build_game_data(ocr_data)
 
-regions = analyze_scoreboard(frame)
-ocr_data = extract_text(regions)
+    carry_forward_keys = [
+        "left_score",
+        "right_score",
+        "quarter",
+    ]
 
-print("OCR data:", ocr_data)
+    for key in carry_forward_keys:
+        if game_data[key] is None:
+            game_data[key] = last_valid_game_data[key]
+        else:
+            last_valid_game_data[key] = game_data[key]
 
-#game_data = build_game_data(ocr_data)
+    timeline.append(game_data.copy())
 
-print("OCR data:", ocr_data)
-#print("Game data:", game_data)
+    print("Game data:", game_data)
 
-#cv2.imwrite("../data/video_scoreboard.jpg", regions["scoreboard"])
-#left_score_box = cv2.selectROI(
-#   "Select Only Left Score Number",
-#    regions["scoreboard"],
-#    showCrosshair=True,
-#    fromCenter=False
-#)
-
-#print("Left score box:", left_score_box)
-#print("Scoreboard shape:", regions["scoreboard"].shape)
-
-#cv2.imshow("Shot Clock", regions["shot_clock"])
-#cv2.waitKey(0)
-#cv2.destroyAllWindows()
-
-
-#ocr_data = extract_text(regions)
-
-#game_data = build_game_data(ocr_data)
-
-#print(game_data)
+print("\nTimeline length:", len(timeline))
+save_game_data (
+    timeline,
+    "../data/video_timeline.json"
+)
 
 video.release()
