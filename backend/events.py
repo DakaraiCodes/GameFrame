@@ -47,3 +47,43 @@ def detect_scoring_events(timeline):
             })
 
     return events
+
+def get_leader(left_score, right_score):
+    if left_score > right_score:
+        return "left"
+
+    if right_score > left_score:
+        return "right"
+
+    return "tie"
+
+def detect_lead_changes(scoring_events):
+    lead_changes = []
+    previous_leader = "tie"
+
+    for event in scoring_events:
+        left_score, right_score = map(
+            int,
+            event["score"].split("-")
+        )
+
+        current_leader = get_leader(
+            left_score,
+            right_score
+        )
+
+        if (
+            current_leader != "tie"
+            and current_leader != previous_leader
+        ):
+            lead_changes.append({
+                "frame": event["frame"],
+                "new_leader": current_leader,
+                "game_clock": event["game_clock"],
+                "score": event["score"],
+            })
+
+        previous_leader = current_leader
+
+    return lead_changes
+

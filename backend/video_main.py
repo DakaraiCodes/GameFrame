@@ -4,7 +4,8 @@ from vision import analyze_scoreboard
 from ocr import extract_text
 from models import build_game_data
 from io_utils import save_game_data
-from events import detect_scoring_events
+from events import detect_scoring_events, detect_lead_changes
+from runs import detect_scoring_runs
 
 video_path = "../data/sample_game.mp4"
 
@@ -61,5 +62,26 @@ save_game_data(
     scoring_events,
     "../data/scoring_events.json"
 )
+
+lead_changes = detect_lead_changes(scoring_events)
+
+print("\nLead changes:")
+
+for change in lead_changes:
+    print(change)
+
+scoring_events = detect_scoring_events(timeline)
+
+print("\nScorng events:")
+
+for event in scoring_events:
+    print(event)
+
+scoring_runs = detect_scoring_runs(scoring_events)
+
+print("\nScoring runs:")
+
+for run in scoring_runs:
+    print(run)
 
 video.release()
