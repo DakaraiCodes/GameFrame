@@ -1,3 +1,17 @@
+def count_ties(score_progression):
+    tie_count = 0
+
+    for entry in score_progression[1:]:
+        left_score, right_score = map(
+            int,
+            entry["score"].split("-")
+        )
+
+        if left_score == right_score:
+            tie_count += 1
+
+    return tie_count
+
 def get_previous_valid_clock(timeline, index):
     for previous_index in range(index, -1, -1):
         game_clock = timeline[previous_index]["game_clock"]

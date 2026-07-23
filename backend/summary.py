@@ -5,6 +5,7 @@ def build_game_summary(
     scoring_runs,
     largest_lead,
     largest_run,
+    tie_count,
 ):
     final_state = timeline[-1]
 
@@ -19,4 +20,5 @@ def build_game_summary(
         "scoring_runs": len(scoring_runs),
         "largest_lead": largest_lead,
         "largest_run": largest_run,
+        "tie_count": tie_count,
     }

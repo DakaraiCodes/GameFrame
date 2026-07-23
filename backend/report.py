@@ -42,6 +42,9 @@ def print_game_summary(summary, team_names):
         f"Lead Changes : {summary['lead_changes']}"
     )
     print(
+        f"Ties : {summary['tie_count']}"
+    )
+    print(
         f"Scoring Runs : {summary['scoring_runs']}"
     )
 

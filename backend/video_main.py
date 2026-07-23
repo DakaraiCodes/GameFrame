@@ -14,8 +14,8 @@ from runs import detect_scoring_runs
 from teams import get_team_name
 from summary import build_game_summary
 from report import print_game_summary
-from stats import get_largest_lead, get_largest_run
-
+from stats import get_largest_lead, get_largest_run, count_ties
+from charts import create_score_progression_chart
 
 team_names = {
     "left": "Knicks",
@@ -77,8 +77,23 @@ lead_changes = detect_lead_changes(scoring_events)
 scoring_runs = detect_scoring_runs(scoring_events)
 score_progression = build_score_progression(scoring_events)
 
+create_score_progression_chart(
+    score_progression,
+    team_names,
+)
+
+print("\nGenerated files:")
+print("../data/video_timeline.json")
+print("../data/scoring_events.json")
+print("../data/score_progression.png")
+
 largest_lead = get_largest_lead(timeline)
 largest_run = get_largest_run(scoring_runs)
+tie_count = count_ties(score_progression)
+
+
+print("\nTie count:")
+print(tie_count)
 
 
 print("\nLargest lead:")
@@ -86,6 +101,8 @@ print(largest_lead)
 
 
 print("\nScoring events:")
+
+
 
 for event in scoring_events:
     team_name = get_team_name(
@@ -139,6 +156,7 @@ game_summary = build_game_summary(
     scoring_runs,
     largest_lead,
     largest_run,
+    tie_count,
 )
 
 print_game_summary(
