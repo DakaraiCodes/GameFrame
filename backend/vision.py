@@ -35,9 +35,6 @@ def analyze_scoreboard(image):
         int(scoreboard_width * 0.94):int(scoreboard_width * 1.00)
     ]
     
-    print("Image received succesfully")
-
-
     left_score = scoreboard[
         int(scoreboard_height * 0.07):int(scoreboard_height * 0.88),
         int(scoreboard_width * 0.31):int(scoreboard_width * 0.40)

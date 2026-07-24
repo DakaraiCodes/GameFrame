@@ -38,8 +38,6 @@ timeline = []
 
 
 for index, frame in enumerate(frames):
-    print(f"\nFrame {index + 1}")
-
     regions = analyze_scoreboard(frame)
     ocr_data = extract_text(regions)
     game_data = build_game_data(ocr_data)
@@ -58,7 +56,10 @@ for index, frame in enumerate(frames):
 
     timeline.append(game_data.copy())
 
-    print("Game data:", game_data)
+    if(index + 1) % 10 == 0:
+        print(f"Processed {index + 1} sampled frames...")
+
+
 
 
 video.release()
