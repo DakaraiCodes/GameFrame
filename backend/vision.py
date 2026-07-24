@@ -1,50 +1,37 @@
-import cv2
+from profiles import SCOREBOARD_PROFILES
 
 
-def analyze_scoreboard(image):
+def crop_region(image, region_profile):
     image_height, image_width = image.shape[:2]
 
-    scoreboard = image[
-        int(image_height * 0.94):int(image_height * 1.00),
-        int(image_width * 0.247):int(image_width * 0.752)
+    return image[
+        int(image_height * region_profile["top"]):
+        int(image_height * region_profile["bottom"]),
+
+        int(image_width * region_profile["left"]):
+        int(image_width * region_profile["right"])
     ]
 
-    scoreboard_height, scoreboard_width = scoreboard.shape[:2]
-    left_score = scoreboard[
-        int(scoreboard_height * 0.05):int(scoreboard_height * 0.90),
-        int(scoreboard_width * 0.31):int(scoreboard_width * 0.40)
-    ]
 
-    right_score = scoreboard[
-        int(scoreboard_height * 0.05):int(scoreboard_height * 0.90),
-        int(scoreboard_width * 0.58):int(scoreboard_width * 0.67)
-    ]
+def analyze_scoreboard(image, profile_name="sample_game"):
+    profile = SCOREBOARD_PROFILES[profile_name]
 
-    quarter = scoreboard[
-        int(scoreboard_height * 0.05):int(scoreboard_height * 0.90),
-        int(scoreboard_width * 0.67):int(scoreboard_width * 0.76)
-    ]
+    scoreboard = crop_region(
+        image,
+        profile["scoreboard"]
+    )
 
-    game_clock = scoreboard[
-        int(scoreboard_height * 0.05):int(scoreboard_height * 0.90),
-        int(scoreboard_width * 0.76):int(scoreboard_width * 0.94)
-    ]
-
-    shot_clock = scoreboard[
-        int(scoreboard_height * 0.05):int(scoreboard_height * 0.90),
-        int(scoreboard_width * 0.94):int(scoreboard_width * 1.00)
-    ]
-    
-    left_score = scoreboard[
-        int(scoreboard_height * 0.07):int(scoreboard_height * 0.88),
-        int(scoreboard_width * 0.31):int(scoreboard_width * 0.40)
-    ]
-    
-    return {
-        "scoreboard": scoreboard,
-        "left_score":left_score,
-        "right_score":right_score,
-        "game_clock":game_clock,
-        "quarter":quarter,
-        "shot_clock":shot_clock,
+    regions = {
+        "scoreboard": scoreboard
     }
+
+    for region_name, region_profile in profile.items():
+        if region_name == "scoreboard":
+            continue
+
+        regions[region_name] = crop_region(
+            scoreboard,
+            region_profile
+        )
+
+    return regions
