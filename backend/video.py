@@ -28,11 +28,10 @@ def get_video_fps(video):
 
     return fps
 
-def get_frames_every_second(video):
+def stream_frames_every_second(video):
     fps = get_video_fps(video)
     frame_interval = int(fps)
 
-    frames = []
     frame_number = 0
 
     while True:
@@ -42,20 +41,21 @@ def get_frames_every_second(video):
             break
 
         if frame_number % frame_interval == 0:
-            frames.append(frame)
+            yield frame
 
         frame_number += 1
-
-    return frames
 
 if __name__ == "__main__":
     video_path = "../data/sample_game.mp4"
 
     video = open_video(video_path)
 
-    frames = get_frames_every_second(video)
+    frame_count = 0
 
-    print("Frames extracted", len(frames))
+    for frame in stream_frames_every_second(video):
+        frame_count += 1
+
+    print("Frames extracted", frame_count)
 
     video.release()
 

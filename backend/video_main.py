@@ -1,6 +1,6 @@
 import cv2
 
-from video import open_video, get_frames_every_second
+from video import open_video, stream_frames_every_second
 from vision import analyze_scoreboard
 from ocr import extract_text
 from models import build_game_data
@@ -26,7 +26,7 @@ video_path = "../data/sample_game.mp4"
 
 video = open_video(video_path)
 
-frames = get_frames_every_second(video)
+frames = stream_frames_every_second(video)
 
 last_valid_game_data = {
     "left_score": None,
