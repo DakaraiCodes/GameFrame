@@ -1,4 +1,5 @@
-from profiles import SCOREBOARD_PROFILES
+from profiles import load_scoreboard_profile
+from config import ACTIVE_PROFILE
 
 
 def crop_region(image, region_profile):
@@ -13,8 +14,11 @@ def crop_region(image, region_profile):
     ]
 
 
-def analyze_scoreboard(image, profile_name="sample_game"):
-    profile = SCOREBOARD_PROFILES[profile_name]
+def analyze_scoreboard(image, profile_name=None):
+    if profile_name is None:
+        profile_name = ACTIVE_PROFILE
+
+    profile = load_scoreboard_profile(profile_name)
 
     scoreboard = crop_region(
         image,

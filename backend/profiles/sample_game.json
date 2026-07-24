@@ -1,0 +1,38 @@
+{
+  "scoreboard": {
+    "top": 0.94,
+    "bottom": 1.0,
+    "left": 0.247,
+    "right": 0.752
+  },
+  "left_score": {
+    "top": 0.05,
+    "bottom": 0.9,
+    "left": 0.31,
+    "right": 0.4
+  },
+  "right_score": {
+    "top": 0.05,
+    "bottom": 0.9,
+    "left": 0.58,
+    "right": 0.67
+  },
+  "quarter": {
+    "top": 0.05,
+    "bottom": 0.9,
+    "left": 0.67,
+    "right": 0.76
+  },
+  "game_clock": {
+    "top": 0.05,
+    "bottom": 0.9,
+    "left": 0.76,
+    "right": 0.94
+  },
+  "shot_clock": {
+    "top": 0.05,
+    "bottom": 0.9,
+    "left": 0.94,
+    "right": 1.0
+  }
+}
